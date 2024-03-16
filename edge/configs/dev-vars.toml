@@ -1,0 +1,5 @@
+store_id = "1bb62adb-8741-4dd7-8d13-d205bbb8a9a0"
+password = "p5Je1k6hq8r4JtRxhKXfsEy11rnS1iuA"
+
+[iot]
+url = "ws://localhost/iot-api/v1/ws"

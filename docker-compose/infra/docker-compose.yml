@@ -1,0 +1,67 @@
+services:
+  db:
+    image: postgres:16.1-alpine3.18
+    networks:
+      - db-net
+    ports:
+      - 15432:5432
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=web
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-q", "-d", "web", "-U", "postgres" ]
+      interval: 5s
+  edge-db:
+    image: postgres:16.1-alpine3.18
+    networks:
+      - edge-db-net
+    ports:
+      - 25432:5432
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=edge
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-q", "-d", "edge", "-U", "postgres" ]
+      interval: 5s
+  redis:
+    image: redis:7.2.3-alpine3.18
+    networks:
+      - redis-net
+    ports:
+      - 6379:6379
+    healthcheck:
+      test: ["CMD", "redis-cli","ping"]
+      interval: 5s
+  rabbitmq:
+    image: rabbitmq:3.12.8-management-alpine
+    networks:
+      - amqp-net
+    ports:
+      - 5672:5672
+      - 15672:15672
+    healthcheck:
+      test: [ "CMD", "wget", "--spider", "localhost:15672" ]
+      interval: 5s
+      retries: 10
+  mosquitto:
+    image: eclipse-mosquitto:2.0.18
+    networks:
+      - mqtt-net
+    ports:
+      - 1883:1883
+    volumes:
+      - ./mosquitto:/mosquitto/config
+
+networks:
+  db-net:
+    external: true
+  edge-db-net:
+    external: true
+  redis-net:
+    external: true
+  amqp-net:
+    external: true
+  mqtt-net:
+    external: true

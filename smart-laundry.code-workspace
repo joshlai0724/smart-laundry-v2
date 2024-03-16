@@ -1,0 +1,26 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "docker-compose"
+		},
+		{
+			"path": "doc"
+		},
+		{
+			"path": "backend"
+		},
+		{
+			"path": "frontend"
+		},
+		{
+			"path": "edge"
+		},
+		{
+			"path": "coin-acceptor"
+		}
+	],
+	"settings": {}
+}

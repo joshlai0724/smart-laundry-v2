@@ -1,0 +1,34 @@
+services:
+  edge:
+    image: alpine:3.18.4
+    networks:
+      - edge-db-net
+      - mqtt-net
+      - nginx-net
+    volumes:
+      - ../../edge/bin/edge:/app/edge
+      - ../../edge/configs:/app/configs
+      - ../../edge/info:/app/info
+    environment:
+      - ENV=prod
+    working_dir: /app
+    command: [ "./edge" ]
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+  migrate:
+    image: migrate/migrate:v4.16.2-amd64
+    networks:
+      - edge-db-net
+    volumes:
+      - ../../edge/db/migrations:/migrations
+    command: >
+      -database postgres://postgres:postgres@edge-db:5432/edge?sslmode=disable -path /migrations/ -verbose up
+
+networks:
+  edge-db-net:
+    external: true
+  mqtt-net:
+    external: true
+  nginx-net:
+    external: true

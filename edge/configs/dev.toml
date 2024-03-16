@@ -1,0 +1,17 @@
+[database]
+source = "postgresql://postgres:postgres@localhost:25432/edge?sslmode=disable"
+
+[iot]
+retry_interval = "10s"
+
+[mosquitto]
+url = "tcp://localhost:1883"
+username = "aACPctA61D"
+password = "LEovkexP107rp5SUoYRPyxxZo7gPF7z8"
+
+[records_resend]
+interval = "10s"
+batch_size = 100
+
+[info]
+edge_version_file = "./info/EDGE_VERSION"

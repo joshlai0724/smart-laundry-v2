@@ -1,0 +1,42 @@
+.register_page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-image: linear-gradient(135deg, #5efce8 10%, #736efe 100%);
+
+  .register_form {
+    padding: 24px;
+    width: 440px;
+    border-radius: 4px;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    background: #fff;
+
+    .register-btn {
+      width: 100%;
+      margin-top: 10px;
+      white-space: nowrap;
+
+      .ant-form-item-control-input-content {
+        display: flex;
+        justify-content: space-between;
+
+        .ant-btn {
+          width: 180px;
+
+          span {
+            font-size: 14px;
+          }
+        }
+      }
+    }
+
+    .register_form_button {
+      width: 100%;
+    }
+
+    .register_btn_back {
+      float: right;
+    }
+  }
+}

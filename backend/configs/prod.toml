@@ -1,0 +1,37 @@
+max_password_attempts = 3
+max_user_name_length = 10
+max_store_name_length = 10
+max_store_address_length = 50
+store_password_length = 32
+
+[database]
+source = "postgresql://postgres:postgres@db:5432/web?sslmode=disable"
+
+[redis]
+url = "redis:6379"
+
+[rabbitmq]
+url = "amqp://guest:guest@rabbitmq:5672"
+
+[web]
+port = "8000"
+
+[iot]
+port = "7999"
+
+[ver_code.check_phone_number_owner]
+max_msg_per_time_period = 5
+time_period = "24h"
+live_time = "6m"
+length = 6
+
+[ver_code.reset_password]
+max_msg_per_time_period = 5
+time_period = "24h"
+live_time = "15m"
+length = 32
+
+[token]
+symmetric_key = "D4Fyzbi0D9J6qKhHgQXKHyoEo6qvD4kN"
+access_token_duration = "15m"
+refresh_token_duration = "8h"

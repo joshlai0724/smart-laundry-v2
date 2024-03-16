@@ -1,0 +1,9 @@
+device_id = "device_foo"
+points = 10
+state = "Idle"
+beacon_interval = "10s"
+
+[mosquitto]
+url = "tcp://localhost:1883"
+username = "aACPctA61D"
+password = "LEovkexP107rp5SUoYRPyxxZo7gPF7z8"

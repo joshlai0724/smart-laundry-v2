@@ -1,0 +1,80 @@
+services:
+  nginx:
+    image: nginx:1.25.3-alpine3.18
+    networks:
+      - default
+      - nginx-net
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+      - ../../frontend/dist:/www/web
+    depends_on:
+      - backend
+      - iot
+  backend:
+    image: alpine:3.18.4
+    networks:
+      - default
+      - amqp-net
+      - redis-net
+      - db-net
+    volumes:
+      - ../../backend/bin/web:/app/web
+      - ../../backend/configs:/app/configs
+    environment:
+      - ENV=prod
+    working_dir: /app
+    command: [ "./web" ]
+    depends_on:
+      init-db:
+        condition: service_completed_successfully
+  iot:
+    image: alpine:3.18.4
+    networks:
+      - default
+      - amqp-net
+      - redis-net
+      - db-net
+    volumes:
+      - ../../backend/bin/iot:/app/iot
+      - ../../backend/configs:/app/configs
+    environment:
+      - ENV=prod
+    working_dir: /app
+    command: [ "./iot" ]
+    depends_on:
+      init-db:
+        condition: service_completed_successfully
+  init-db:
+    image: alpine:3.18.4
+    networks:
+      - db-net
+    volumes:
+      - ../../backend/bin/init-db:/app/init-db
+      - ../../backend/configs:/app/configs
+    environment:
+      - ENV=prod
+    working_dir: /app
+    command: [ "./init-db" ]
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+  migrate:
+    image: migrate/migrate:v4.16.2-amd64
+    networks:
+      - db-net
+    volumes:
+      - ../../backend/db/migrations:/migrations
+    command: >
+      -database postgres://postgres:postgres@db:5432/web?sslmode=disable -path /migrations/ -verbose up
+
+networks:
+  db-net:
+    external: true
+  redis-net:
+    external: true
+  amqp-net:
+    external: true
+  nginx-net:
+    external: true
